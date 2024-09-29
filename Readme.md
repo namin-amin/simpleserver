@@ -1,10 +1,16 @@
 # SimpleRoute
 
-This is a simple wrapper for golang standard http mux.
+This is a Bootstrapper for starting a webapplication. My requirement was just to host a webapi.
 
 ## Features
-- RouterGroups
-- Middlewares
+- ### Router
+    - Middleware
+    - Router with Grouped Routes
+- ### Configuration
+    - This is just a wrapper around viper with nice defaults.
+- ### Database(TODO)
+    - Migrations
+    - Database operations with sqlx/gorm(TBD)
 
 ## TODO
 - Context need to be passed down
