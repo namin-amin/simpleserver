@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-func SendString(statuscode int, content string, w http.ResponseWriter) error {
-	w.WriteHeader(statuscode)
+func SendString(statusCode int, content string, w http.ResponseWriter) error {
+	w.WriteHeader(statusCode)
 	_, err := w.Write([]byte(content))
 	return err
 }
 
-func SendJson(statuscode int, content interface{}, w http.ResponseWriter) error {
-	w.WriteHeader(statuscode)
+func SendJson(statusCode int, content interface{}, w http.ResponseWriter) error {
+	w.WriteHeader(statusCode)
 	serializedContent, err := json.Marshal(content)
 
 	if err != nil {
