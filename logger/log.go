@@ -98,7 +98,7 @@ func NewWithConfig(config Config) Logger {
 
 func New() Logger {
 	config := Config{
-		Handler: slog.NewJSONHandler(os.Stderr, nil),
+		Handler: slog.NewTextHandler(os.Stderr, nil),
 	}
 	return NewWithConfig(config)
 }
