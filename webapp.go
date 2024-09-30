@@ -6,7 +6,7 @@ import (
 	"github.com/namin-amin/simpleserver/server"
 )
 
-type WebApp interface {
+type WebApp interface {	
 	Router() *server.Server
 	Config() *config.Config
 	Logger() logger.Logger
