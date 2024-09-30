@@ -1,4 +1,4 @@
-module github.com/namin-amin/core
+module github.com/namin-amin/simpleserver
 
 go 1.23.1
 
