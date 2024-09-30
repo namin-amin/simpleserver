@@ -1,9 +1,9 @@
 package core
 
 import (
-	"github.com/namin-amin/core/config"
-	"github.com/namin-amin/core/logger"
-	"github.com/namin-amin/core/server"
+	"github.com/namin-amin/simpleserver/config"
+	"github.com/namin-amin/simpleserver/logger"
+	"github.com/namin-amin/simpleserver/server"
 )
 
 type WebApp interface {

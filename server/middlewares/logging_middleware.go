@@ -1,11 +1,10 @@
 package middlewares
 
 import (
+	"github.com/namin-amin/simpleserver/server"
 	"log/slog"
 	"net/http"
 	"time"
-
-	"github.com/namin-amin/core/server"
 )
 
 func RequestLogger(logger slog.Logger) server.MiddlewareHandler {

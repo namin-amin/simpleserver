@@ -2,10 +2,9 @@ package server
 
 import (
 	"fmt"
-	"github.com/namin-amin/core/logger"
+	"github.com/namin-amin/simpleserver/config"
+	"github.com/namin-amin/simpleserver/logger"
 	"net/http"
-
-	"github.com/namin-amin/core/config"
 )
 
 type RouteHandler func(http.ResponseWriter, *http.Request) error
