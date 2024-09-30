@@ -1,13 +1,13 @@
 package middlewares
 
 import (
+	"github.com/namin-amin/simpleserver/logger"
 	"github.com/namin-amin/simpleserver/server"
-	"log/slog"
 	"net/http"
 	"time"
 )
 
-func RequestLogger(logger slog.Logger) server.MiddlewareHandler {
+func RequestLogger(logger logger.Logger) server.MiddlewareHandler {
 	return func(next server.RouteHandler) server.RouteHandler {
 		return func(w http.ResponseWriter, r *http.Request) error {
 			t := time.Now()
