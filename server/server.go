@@ -2,9 +2,10 @@ package server
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/namin-amin/simpleserver/config"
 	"github.com/namin-amin/simpleserver/logger"
-	"net/http"
 )
 
 type RouteHandler func(http.ResponseWriter, *http.Request) error
@@ -37,7 +38,7 @@ func (s *Server) HandleFunc(pattern string, handler RouteHandler, middleware ...
 	}
 
 	s.ServeMux.HandleFunc(pattern, func(writer http.ResponseWriter, request *http.Request) {
-		handler.ServeHTTP(writer, request, s.logger)
+		wrappedHandler.ServeHTTP(writer, request, s.logger)
 	})
 }
 
