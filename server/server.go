@@ -42,6 +42,42 @@ func (s *Server) HandleFunc(pattern string, handler RouteHandler, middleware ...
 	})
 }
 
+func (s *Server) GET(route string, 
+					handler RouteHandler, 
+					middleware ...MiddlewareHandler) {
+	s.HandleFunc(fmt.Sprintf("GET %s", route), handler, middleware...)
+}
+
+func (s *Server) POST(route string, 
+					hadler RouteHandler, 
+					middleware ...MiddlewareHandler) {
+	s.HandleFunc(fmt.Sprintf("POST %s", route), hadler, middleware...)
+}
+
+func (s *Server) PUT(route string, 
+					hanler RouteHandler, 
+					middleware ...MiddlewareHandler) {
+	s.HandleFunc(fmt.Sprintf("PUT %s", route), hanler, middleware...)
+}
+
+func (s *Server) PATCH(route string, 
+					hanler RouteHandler, 
+					middleware ...MiddlewareHandler) {
+	s.HandleFunc(fmt.Sprintf("PATCH %s", route), hanler, middleware...)
+}
+
+func (s *Server) DELETE(route string, 
+						hanler RouteHandler, 
+						middleware ...MiddlewareHandler) {
+	s.HandleFunc(fmt.Sprintf("DELETE %s", route), hanler, middleware...)
+}
+
+func (s *Server) HEAD(route string, 
+					hanler RouteHandler, 
+					middleware ...MiddlewareHandler) {
+	s.HandleFunc(fmt.Sprintf("HEAD %s", route), hanler, middleware...)
+}
+
 func (s *Server) NewGroup(groupName string) *RouterGroup {
 	return &RouterGroup{
 		s:      s,
@@ -57,7 +93,7 @@ func (s *Server) Run() error {
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.ServeMux.ServeHTTP(w, r)
-}
+}	
 
 func NewServer(config *config.Config, logger logger.Logger) *Server {
 	return &Server{
