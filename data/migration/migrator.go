@@ -35,6 +35,7 @@ type Migrator struct {
 	dbName        string
 }
 
+// Do a UP/DOWN migration to all the way up to the latest version
 func (m *Migrator) DoGenericMigration(direction MigrationDirection) error {
 	mg, err := m.GetMigrator()
 
@@ -48,6 +49,7 @@ func (m *Migrator) DoGenericMigration(direction MigrationDirection) error {
 	return mg.Up()
 }
 
+// Get the Migrate to customise your migrations yourself
 func (m *Migrator) GetMigrator() (*migrate.Migrate, error) {
 	c := config.NewConfig()
 
@@ -70,6 +72,9 @@ func (m *Migrator) GetMigrator() (*migrate.Migrate, error) {
 	return migrate.NewWithInstance("simpleserer_migrator", d, m.dbName, driver)
 }
 
+// Creates and Returns the Migrator for doing Database Migrations
+//
+// Internally this uses go-migrate package so check the docs to setup sql files
 func NewMigrator(fileSystem fs.FS, dbName string, db *sql.DB, dbType DBType) *Migrator {
 	return &Migrator{
 		config:        config.NewConfig(),
