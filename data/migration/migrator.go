@@ -9,6 +9,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
+	"github.com/namin-amin/simpleserver/config"
 )
 
 const migrationFilesPath = "migrations"
@@ -26,34 +27,55 @@ const (
 	DOWN
 )
 
-// TODO maybe convert this to something like a builder
-func DoGenericMigration(fileSystem fs.FS, dbName string, db *sql.DB, dbType DBType, direction MigrationDirection) error {
-	m, err := GetMigrator(fileSystem, dbName, db, dbType)
+type Migrator struct {
+	config        *config.Config
+	db            *sql.DB
+	dbType        DBType
+	scriptsFolder fs.FS
+	dbName        string
+}
+
+func (m *Migrator) DoGenericMigration(direction MigrationDirection) error {
+	mg, err := m.GetMigrator()
 
 	if err != nil {
 		return err
 	}
 
 	if direction == DOWN {
-		return m.Down()
+		return mg.Down()
 	}
-	return m.Up()
+	return mg.Up()
 }
 
-func GetMigrator(fileSystem fs.FS, dbName string, db *sql.DB, dbType DBType) (*migrate.Migrate, error) {
-	d, err := iofs.New(fileSystem, migrationFilesPath)
+func (m *Migrator) GetMigrator() (*migrate.Migrate, error) {
+	c := config.NewConfig()
+
+	overriddentMigrationPath := c.GetEnvVarWithDefault("migrationpath", migrationFilesPath)
+
+	d, err := iofs.New(m.scriptsFolder, overriddentMigrationPath)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var dri database.Driver
+	var driver database.Driver
 
-	if dbType == POSTGRESS {
-		dri, _ = postgres.WithInstance(db, &postgres.Config{})
-	} else if dbType == SQLITE3 {
-		dri, _ = sqlite3.WithInstance(db, &sqlite3.Config{})
+	if m.dbType == POSTGRESS {
+		driver, _ = postgres.WithInstance(m.db, &postgres.Config{})
+	} else if m.dbType == SQLITE3 {
+		driver, _ = sqlite3.WithInstance(m.db, &sqlite3.Config{})
 	}
 
-	return migrate.NewWithInstance("simpleserer_migrator", d, dbName, dri)
+	return migrate.NewWithInstance("simpleserer_migrator", d, m.dbName, driver)
+}
+
+func NewMigrator(fileSystem fs.FS, dbName string, db *sql.DB, dbType DBType) *Migrator {
+	return &Migrator{
+		config:        config.NewConfig(),
+		db:            db,
+		dbType:        dbType,
+		scriptsFolder: fileSystem,
+		dbName:        dbName,
+	}
 }
